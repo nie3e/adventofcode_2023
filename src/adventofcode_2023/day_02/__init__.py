@@ -1,3 +1,6 @@
+from functools import reduce
+
+
 def parse_game_data(game_str: str) -> tuple[int, list[dict]]:
     game, sets_data = game_str.split(':')
     game_id = int(game.split(" ")[1])
@@ -28,8 +31,24 @@ def cube_condurum(input_string: str) -> int:
     return sum_
 
 
+def cube_power(input_string: str) -> int:
+    games = [
+        parse_game_data(game_str) for game_str in input_string.splitlines()
+    ]
+    sum = 0
+    for _, sets in games:
+        min_cubes = {"r": 0, "g": 0, "b": 0}
+        for set_ in sets:
+            for k, v in set_.items():
+                min_cubes[k] = max(min_cubes[k], v)
+        sum += reduce((lambda x, y: x * y), min_cubes.values())
+
+    return sum
+
+
 if __name__ == '__main__':
     with open("my_input", "r") as f:
         my_input = f.read()
 
     print(cube_condurum(my_input))
+    print(cube_power(my_input))
