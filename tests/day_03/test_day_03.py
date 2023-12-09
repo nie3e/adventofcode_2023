@@ -66,4 +66,4 @@ def test_gear_ratios_example():
 ...$.*....
 .664.598.."""
 
-    assert gear_ratios(input_string) == 4361
+    assert gear_ratios(input_string) == (4361, 467835)

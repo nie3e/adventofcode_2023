@@ -51,7 +51,7 @@ def get_symbols(line: str, line_idx: int) -> list[Symbol]:
     return symbols
 
 
-def gear_ratios(input_string: str) -> int:
+def gear_ratios(input_string: str) -> tuple[int, int]:
     row_numbers = []
     symbols = []
     for i, line in enumerate(input_string.splitlines()):
@@ -59,14 +59,19 @@ def gear_ratios(input_string: str) -> int:
         symbols.extend(get_symbols(line, i))
 
     max_y = len(row_numbers) - 1
-    sum = 0
+    sum_ = 0
+    sum_gears = 0
     for s in symbols:
+        touches = []
         for i in range(min(0, s.y - 1), max(max_y, s.y + 1) + 1):
             for number in row_numbers[i]:
                 if number.is_touching(s):
-                    sum += number.value
+                    sum_ += number.value
+                    touches.append(number.value)
+        if len(touches) == 2:
+            sum_gears += touches[0] * touches[1]
 
-    return sum
+    return sum_, sum_gears
 
 
 if __name__ == '__main__':
